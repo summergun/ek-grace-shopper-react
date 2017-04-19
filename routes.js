@@ -16,6 +16,13 @@ app.delete('/products/:id', (req, res, next)=> {
     .catch(next);
 });
 
+app.post('/session', (req, res, next)=> {
+  const credentials = { name, password } = req.body;
+  //models.User.findOne({ where: credentials })
+  console.log(credentials);
+  res.sendStatus(200);
+});
+
 app.get('/categories', (req, res, next)=> {
   models.Category.findAll({ order: 'name', include: [ models.Product ]})
     .then( categories => res.send(categories ))
