@@ -13,13 +13,14 @@ import {connect} from 'react-redux';
 
 import { loadProducts} from './productsReducer';
 import { loadCategories } from './categoriesReducer';
+import { attemptLogin } from './authReducer';
 
 
 const root = document.getElementById('root');
 
-const Routes = ({ fetchData })=> (
+const Routes = ({ init })=> (
   <Router history={ hashHistory }>
-    <Route path='/' component={ App } onEnter={ fetchData }>
+    <Route path='/' component={ App } onEnter={ init }>
       <IndexRoute component={ Home } />
       <Route path='login' component={ LoginPage } />
       <Route path='categories' component={CategoriesPage} />
@@ -30,9 +31,10 @@ const Routes = ({ fetchData })=> (
 
 const mapDispatchToProps = (dispatch)=> (
   {
-    fetchData: ()=> {
+    init: ()=> {
       dispatch(loadProducts());
       dispatch(loadCategories());
+      dispatch(attemptLogin());
     }
   }
 );

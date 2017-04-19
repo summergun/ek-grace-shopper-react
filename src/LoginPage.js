@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from './authReducer';
+import { Link } from 'react-router';
 
 class LoginPage extends Component{
   constructor(){
@@ -24,20 +25,41 @@ class LoginPage extends Component{
     this.setState({ password: ev.target.value });
   }
   render(){
-    const name = this.props.user ? this.props.user.name : '';
     return(
-      <form onSubmit={ this.onLogin }>
-        { name }
-        <div className='form-group'>
-          <label>Name</label>
-          <input className='form-control' value={ this.state.name } onChange={ this.onNameChange } />
-        </div>
-        <div className='form-group'>
-          <label>Password</label>
-          <input className='form-control' value={ this.state.password } onChange={ this.onPasswordChange } />
-        </div>
-        <button className='btn btn-primary'>Login</button>
-      </form>
+      <div>
+        { 
+          this.props.error ? (
+            <div className='alert alert-danger'>
+              { this.props.error }
+            </div>
+          ):( null)
+        }
+        { 
+          this.props.message ? (
+            <div className='alert alert-success'>
+              { this.props.message }
+              <br />
+              <Link to='/categories' className='btn btn-primary'>Start Shopping</Link>
+            </div>
+          ):( null)
+        }
+      {
+        !this.props.user ? (
+          <form onSubmit={ this.onLogin }>
+            <div className='form-group'>
+              <label>Name</label>
+              <input className='form-control' value={ this.state.name } onChange={ this.onNameChange } />
+            </div>
+            <div className='form-group'>
+              <label>Password</label>
+              <input className='form-control' value={ this.state.password } onChange={ this.onPasswordChange } />
+            </div>
+            <button className='btn btn-primary'>Login</button>
+          </form>
+        
+        ):(null)
+      }
+      </div>
     );
   }
 }
@@ -50,7 +72,9 @@ const mapDispatchToProps = (dispatch)=> (
 
 const mapStateToProps = ({ auth })=> (
   {
-    user: auth.user
+    user: auth.user,
+    error: auth.error,
+    message: auth.message
   }
 );
 
