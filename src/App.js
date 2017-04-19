@@ -9,6 +9,8 @@ const App = ({ children, products, categories })=> (
     <Link to='/'>Home</Link>
     { ' | ' }
     <Link to='/categories'>Categories ({ categories.length})</Link>
+    { ' | ' }
+    <Link to='/login'>Login</Link>
     </div>
     { children }
   </div> 
