@@ -13,6 +13,7 @@
     "bootstrap": "^3.3.7",
     "chai": "^3.5.0",
     "express": "^4.15.2",
+    "jwt-simple": "^0.5.1",
     "mocha": "^3.2.0",
     "pg": "^6.1.5",
     "react": "^15.4.2",
@@ -30,8 +31,8 @@
     "postinstall": "npm run webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "./node_modules/webpack/bin/webpack.js",
-    "start:dev": "npm run webpack -- -w & SQL_LOGGING=true DATABASE_URL=postgres://localhost/ek_grace_shopper_db nodemon --ignore dist/ --ignore src/ server.js",
-    "test:dev": "DATABASE_URL=postgres://localhost/ek_grace_shopper_db_test nodemon ./node_modules/mocha/bin/mocha"
+    "start:dev": "npm run webpack -- -w & JWT_SECRET=foo SQL_LOGGING=true DATABASE_URL=postgres://localhost/ek_grace_shopper_db nodemon --ignore dist/ --ignore src/ server.js",
+    "test:dev": "JWT_SECRET=bar DATABASE_URL=postgres://localhost/ek_grace_shopper_db_test nodemon ./node_modules/mocha/bin/mocha"
   },
   "keywords": [],
   "author": "",

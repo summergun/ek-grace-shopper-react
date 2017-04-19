@@ -19,6 +19,7 @@ const seed = ()=> {
   }, {});
 
   let foo, bar, bazz;
+  let moe, larry, curly;
 
   return sync()
     .then(()=> {
@@ -34,7 +35,11 @@ const seed = ()=> {
         .then( () => Category.findOne({ where: { name: 'b' }}))
         .then( b=> Promise.all([ bar.setCategory(b), bazz.setCategory(b)]))
         .then( ()=> users.map( name => User.create({ name, password: name.toUpperCase()})))
-        .then( promises => Promise.all(promises));
+        .then( promises => Promise.all(promises))
+        .then( (result) => [ moe, larry, curly ] = result)
+        .then( ()=> (
+          { moe }
+        ));
     });
 };
 

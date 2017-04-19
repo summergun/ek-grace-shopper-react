@@ -15,7 +15,7 @@ describe('/api/products', ()=> {
 describe('/api/categories', ()=> {
   beforeEach(()=> db.seed());
 
-  it('returns 3 products', ()=> {
+  it('returns 2 categories', ()=> {
     return app.get('/api/categories')
       .then( response => expect(response.body.length).to.equal(2));
   });
