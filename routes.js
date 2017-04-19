@@ -15,3 +15,9 @@ app.delete('/products/:id', (req, res, next)=> {
     .then( () => res.sendStatus(204))
     .catch(next);
 });
+
+app.get('/categories', (req, res, next)=> {
+  models.Category.findAll({ order: 'name'})
+    .then( categories => res.send(categories ))
+    .catch(next);
+});

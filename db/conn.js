@@ -1,5 +1,9 @@
 const Sequelize = require('sequelize');
 
-const conn = new Sequelize(process.env.DATABASE_URL);
+const logging = process.env.SQL_LOGGING === 'true' ? true : false;
+
+const conn = new Sequelize(process.env.DATABASE_URL, {
+  logging 
+});
 
 module.exports = conn;
