@@ -5,7 +5,7 @@ import { logout } from './authReducer';
 
 const App = ({ children, products, categories, user, logout })=> (
   <div className='container'>
-    <h1>EK Grace Shopper</h1>
+    <h1>PROF's Grace Shopper</h1>
     <div className='container'>
     <Link to='/'>Home</Link>
     { ' | ' }
