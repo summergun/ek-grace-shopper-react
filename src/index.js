@@ -4,6 +4,7 @@ import App from './App';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import ProductsPage from './ProductsPage'; 
 import CategoriesPage from './CategoriesPage'; 
+import LoginPage from './LoginPage';
 import { Provider } from 'react-redux';
 import store from './store';
 import Home from './Home';
@@ -12,11 +13,6 @@ import {connect} from 'react-redux';
 
 import { loadProducts} from './productsReducer';
 import { loadCategories } from './categoriesReducer';
-
-const LoginPage = ()=> {
-  return <div>Hi</div>;
-};
-
 
 
 const root = document.getElementById('root');
