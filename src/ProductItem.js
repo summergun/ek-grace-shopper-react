@@ -2,6 +2,7 @@ import React from 'react';
 import ProductList from './ProductList';
 import { connect } from 'react-redux';
 import { createLineItem } from './authReducer';
+import { hashHistory } from 'react-router';
 
 const ProductItem = ({ product, user, createLineItem })=> {
   return (
@@ -27,7 +28,7 @@ const mapStateToProps = ({ auth })=> {
 
 const mapDispatchToProps = (dispatch)=> {
   return {
-    createLineItem: (user, product)=> dispatch(createLineItem( user, product )) 
+    createLineItem: (user, product)=> dispatch(createLineItem( user, product )).then( ()=> hashHistory.push('cart'))
   };
 };
 

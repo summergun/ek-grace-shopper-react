@@ -94,8 +94,6 @@ const authReducer = (state={}, action)=> {
       state = {}; 
       break;
     case CREATE_LINE_ITEM_SUCCESS:
-      console.log(state.user.cart.lineItems);
-      console.log(action);
       const user = Object.assign({}, state.user);
       user.cart.lineItems = [...user.cart.lineItems, action.lineItem]; 
       state = Object.assign({}, state, { user }); 
