@@ -2,13 +2,16 @@ import React from 'react';
 import ProductList from './ProductList';
 import { connect } from 'react-redux';
 
+import ProductItem from './ProductItem';
+
+
 const ProductsPage = ({ products })=> (
   <div className='container'>
     <ul className='list-group'>
     {
       products.map( product => {
         return (
-          <li className='list-group-item' key={product.id}>{ product.name }</li>
+          <ProductItem product={ product } key={ product.id} />
         );
       }) 
     }
