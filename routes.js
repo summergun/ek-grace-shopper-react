@@ -26,8 +26,12 @@ if(!JWT_SECRET)
 app.get('/session/:token', (req, res, next)=> {
   try{
     const token = jwt.decode(req.params.token, JWT_SECRET);
+    let user, cart;
     models.User.findById(token.id)
-      .then( user => res.send(user))
+      .then( _user => user = _user) 
+      .then( ()=> user.getCart())
+      .then( _cart => cart = _cart)
+      .then( () => res.send({ user, cart}))
       .catch(next);
   }
   catch(er){

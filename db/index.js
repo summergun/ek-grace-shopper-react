@@ -3,11 +3,15 @@ const Product = require('./models/Product');
 const Category = require('./models/Category');
 const User = require('./models/User');
 const Order = require('./models/Order');
+const LineItem = require('./models/LineItem');
 
 Product.belongsTo(Category);
 Category.hasMany(Product);
 Order.belongsTo(User);
 User.hasMany(Order);
+
+Order.hasMany(LineItem);
+LineItem.belongsTo(Product);
 
 const sync = ()=> conn.sync({ force: true });
 

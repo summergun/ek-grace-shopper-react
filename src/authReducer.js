@@ -3,11 +3,14 @@ const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
-const loginUserSuccess = (user)=> ({
-  type: LOGIN_SUCCESS,
-  user,
-  message: `Welcome ${user.name}`
-});
+const loginUserSuccess = ({ user, cart })=> {
+  user.cart = cart;
+  return {
+    type: LOGIN_SUCCESS,
+    user,
+    message: `Welcome ${user.name}`
+  };
+};
 
 const loginFailure = ()=> ({
   type: LOGIN_FAILURE
@@ -20,7 +23,7 @@ const logoutSuccess = ()=> ({
 const exchangeTokenForUser = (token, dispatch)=> {
   return axios.get(`/api/session/${token}`)
     .then(response => response.data)
-    .then(user => dispatch(loginUserSuccess(user)));
+    .then(userAndCart => dispatch(loginUserSuccess(userAndCart)));
 
 };
 
