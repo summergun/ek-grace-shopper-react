@@ -2,6 +2,7 @@ import axios from 'axios';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+const CREATE_LINE_ITEM_SUCCESS = 'CREATE_LINE_ITEM_SUCCESS';
 
 const loginUserSuccess = ({ user, cart })=> {
   user.cart = cart;
@@ -20,11 +21,27 @@ const logoutSuccess = ()=> ({
   type: LOGOUT_SUCCESS
 });
 
+const createLineItemSuccess = (lineItem)=> ({
+  type: CREATE_LINE_ITEM_SUCCESS,
+  lineItem
+});
+
 const exchangeTokenForUser = (token, dispatch)=> {
   return axios.get(`/api/session/${token}`)
     .then(response => response.data)
     .then(userAndCart => dispatch(loginUserSuccess(userAndCart)));
 
+};
+
+const createLineItem = (user, product)=> {
+  return (dispatch)=> {
+    const token = localStorage.getItem('token');
+    return axios.post(`/api/cart/${user.cart.id}/lineItems/${token}`, {
+      productId: product.id
+    })
+    .then(response => response.data)
+    .then(lineItem => dispatch(createLineItemSuccess(lineItem)));
+  }
 };
 
 const attemptLogin = (dispatch)=> {
@@ -60,7 +77,8 @@ const login = (credentials)=> {
 export {
   login,
   attemptLogin,
-  logout
+  logout,
+  createLineItem
 };
 
 
@@ -74,6 +92,13 @@ const authReducer = (state={}, action)=> {
       break;
     case LOGOUT_SUCCESS:
       state = {}; 
+      break;
+    case CREATE_LINE_ITEM_SUCCESS:
+      console.log(state.user.cart.lineItems);
+      console.log(action);
+      const user = Object.assign({}, state.user);
+      user.cart.lineItems = [...user.cart.lineItems, action.lineItem]; 
+      state = Object.assign({}, state, { user }); 
       break;
   }
   return state;

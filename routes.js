@@ -23,6 +23,21 @@ const JWT_SECRET = process.env.JWT_SECRET;
 if(!JWT_SECRET)
   throw 'define JWT secret';
 
+app.post('/cart/:cartId/lineItems/:token', (req, res, next)=> {
+  models.Order.findById(req.params.cartId)
+    .then( cart => {
+      console.log(cart);
+      console.log(req.body.productId);
+      return cart;
+    })
+    .then( cart=> models.LineItem.create({ productId: req.body.productId, orderId: cart.id }))
+    .then( lineItem => models.LineItem.findById(lineItem.id, {include: [
+      models.Product
+    ]}))
+    .then( lineItem => res.send(lineItem)) 
+    .catch(next);
+});
+
 app.get('/session/:token', (req, res, next)=> {
   try{
     const token = jwt.decode(req.params.token, JWT_SECRET);

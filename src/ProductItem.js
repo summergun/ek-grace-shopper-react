@@ -1,14 +1,15 @@
 import React from 'react';
 import ProductList from './ProductList';
 import { connect } from 'react-redux';
+import { createLineItem } from './authReducer';
 
-const ProductItem = ({ product, user })=> {
+const ProductItem = ({ product, user, createLineItem })=> {
   return (
     <li className='list-group-item'>
       { product.name }
       {
         user ? (
-          <button className='btn btn-primary pull-right'>Buy Button Goes Here</button>
+          <button className='btn btn-primary pull-right' onClick={()=> createLineItem(user, product) }>Buy Button Goes Here</button>
         ) : (
           null
         )
@@ -24,4 +25,10 @@ const mapStateToProps = ({ auth })=> {
   };
 };
 
-export default connect(mapStateToProps)(ProductItem);
+const mapDispatchToProps = (dispatch)=> {
+  return {
+    createLineItem: (user, product)=> dispatch(createLineItem( user, product )) 
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductItem);

@@ -13,7 +13,11 @@ const App = ({ children, products, categories, user, logout })=> (
     { ' | ' }
     {
       user ? (
-        <a onClick={ logout }>Logout ({ user.name })({ user.cart.id})</a>
+        <span>
+          <a onClick={ logout }>Logout ({ user.name })</a>
+          {' | '} 
+          <Link to='/cart'>Cart ({ user.cart.lineItems.length } Items in cart)</Link>
+          </span>
       ): (
         <Link to='/login'>Login</Link>
       )

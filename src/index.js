@@ -8,6 +8,7 @@ import LoginPage from './LoginPage';
 import { Provider } from 'react-redux';
 import store from './store';
 import Home from './Home';
+import CartPage from './CartPage';
 
 import {connect} from 'react-redux';
 
@@ -24,6 +25,7 @@ const Routes = ({ init })=> (
       <IndexRoute component={ Home } />
       <Route path='login' component={ LoginPage } />
       <Route path='categories' component={CategoriesPage} />
+      <Route path='cart' component={CartPage} />
       <Route path='categories/:name' component={ProductsPage} />
     </Route>
   </Router>

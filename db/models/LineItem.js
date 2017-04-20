@@ -1,6 +1,6 @@
 const conn = require('../conn'); 
 
-const LineItem = conn.define('line_item', {
+const LineItem = conn.define('lineItem', {
   quantity: {
     type: conn.Sequelize.INTEGER,
     unique: true

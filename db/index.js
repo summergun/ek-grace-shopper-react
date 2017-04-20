@@ -54,7 +54,9 @@ module.exports = {
   models: {
     Product,
     Category,
-    User
+    User,
+    Order,
+    LineItem
   },
   sync,
   seed
