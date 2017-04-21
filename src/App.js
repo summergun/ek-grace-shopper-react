@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from './authReducer';
+import TopSeller from './TopSeller';
 
 const App = ({ children, products, categories, user, logout })=> (
   <div className='container'>
@@ -23,6 +24,7 @@ const App = ({ children, products, categories, user, logout })=> (
       )
     }
     </div>
+    <TopSeller />
     { children }
   </div> 
 );

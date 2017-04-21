@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 import { loadProducts} from './productsReducer';
 import { loadCategories } from './categoriesReducer';
 import { attemptLogin } from './authReducer';
+import { loadLineItems } from './lineItemsReducer';
 
 
 const root = document.getElementById('root');
@@ -37,6 +38,7 @@ const mapDispatchToProps = (dispatch)=> (
       dispatch(loadProducts());
       dispatch(loadCategories());
       dispatch(attemptLogin());
+      dispatch(loadLineItems());
     }
   }
 );

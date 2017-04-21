@@ -73,6 +73,14 @@ app.post('/session', (req, res, next)=> {
     .catch(next);
 });
 
+app.get('/lineItems', (req, res, next)=> {
+  models.LineItem.findAll({
+    include: [ models.Product ]
+  })
+  .then( lineItems => res.send(lineItems))
+  .catch(next);
+});
+
 app.get('/categories', (req, res, next)=> {
   models.Category.findAll({ order: 'name', include: [ models.Product ]})
     .then( categories => res.send(categories ))
