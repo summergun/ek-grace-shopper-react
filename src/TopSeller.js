@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createLineItem } from './authReducer';
+import { createLineItem } from './cartReducer';
 
-const TopSeller = ({ favoriteProduct, user, count, createLineItem })=> {
+const TopSeller = ({ favoriteProduct, user, count, createLineItem, cart })=> {
   if(!favoriteProduct)
     return null;
   return (
     <div className='well'>
     {
       user ? (
-       <button className='btn btn-primary' onClick={ ()=> createLineItem(user, favoriteProduct)}>Top Seller: { favoriteProduct.name } - { count } Bought - Click to Buy!!</button> 
+       <button className='btn btn-primary' onClick={ ()=> createLineItem(user, favoriteProduct, cart)}>Top Seller: { favoriteProduct.name } - { count } Bought - Click to Buy!!</button> 
       ):(
         <span>{ favoriteProduct.name } { count }</span>
       )
@@ -18,7 +18,7 @@ const TopSeller = ({ favoriteProduct, user, count, createLineItem })=> {
   );
 }
 
-const mapStateToProps = ({ lineItems, categories, auth })=> {
+const mapStateToProps = ({ lineItems, categories, auth, cart })=> {
   const map = lineItems.reduce((memo, lineItem) => {
     memo[lineItem.productId] = typeof memo[lineItem.productId] === 'undefined' ? 0 : memo[lineItem.productId]; 
     memo[lineItem.productId]++;
@@ -45,14 +45,15 @@ const mapStateToProps = ({ lineItems, categories, auth })=> {
   return {
     favoriteProduct: favoriteProduct,
     user: auth.user,
-    count: max.max
+    count: max.max,
+    cart
   };
 
 };
 
 const mapDispatchToProps = (dispatch)=> {
   return {
-    createLineItem: (user, product)=> dispatch(createLineItem( user, product ))
+    createLineItem: (user, product, cart)=> dispatch(createLineItem( user, product, cart ))
   };
 };
 

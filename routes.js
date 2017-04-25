@@ -26,8 +26,6 @@ if(!JWT_SECRET)
 app.post('/cart/:cartId/lineItems/:token', (req, res, next)=> {
   models.Order.findById(req.params.cartId)
     .then( cart => {
-      console.log(cart);
-      console.log(req.body.productId);
       return cart;
     })
     .then( cart=> models.LineItem.create({ productId: req.body.productId, orderId: cart.id }))
@@ -38,15 +36,29 @@ app.post('/cart/:cartId/lineItems/:token', (req, res, next)=> {
     .catch(next);
 });
 
+app.delete('/cart/:cartId/lineItems/:id/:token', (req, res, next)=> {
+  models.LineItem.destroy({ where: {id : req.params.id}})
+    .then(()=> res.sendStatus(200))
+    .catch(next);
+});
+
+app.get('/cart/:token', (req, res, next)=> {
+  try{
+    const token = jwt.decode(req.params.token, JWT_SECRET);
+    models.User.getCartForUser(token.id)
+      .then( (cart) => res.send(cart))
+      .catch(next);
+  }
+  catch(er){
+    res.sendStatus(401);
+  }
+});
+
 app.get('/session/:token', (req, res, next)=> {
   try{
     const token = jwt.decode(req.params.token, JWT_SECRET);
-    let user, cart;
     models.User.findById(token.id)
-      .then( _user => user = _user) 
-      .then( ()=> user.getCart())
-      .then( _cart => cart = _cart)
-      .then( () => res.send({ user, cart}))
+      .then( user => res.send(user ))
       .catch(next);
   }
   catch(er){
@@ -66,7 +78,6 @@ app.post('/session', (req, res, next)=> {
       }
       else{
         const token = jwt.encode({ id: user.id}, JWT_SECRET);
-        console.log(user.get());
         res.status(200).send({ token });
       }
     })

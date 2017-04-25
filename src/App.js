@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { logout } from './authReducer';
 import TopSeller from './TopSeller';
 
-const App = ({ children, products, categories, user, logout })=> (
+const App = ({ children, products, categories, user, logout, cart })=> (
   <div className='container'>
     <h1>PROF's Grace Shopper</h1>
     <div className='container'>
@@ -13,11 +13,11 @@ const App = ({ children, products, categories, user, logout })=> (
     <Link to='/categories'>Categories ({ categories.length})</Link>
     { ' | ' }
     {
-      user ? (
+      (user && cart ) ? (
         <span>
           <a onClick={ logout }>Logout ({ user.name })</a>
           {' | '} 
-          <Link to='/cart'>Cart ({ user.cart.lineItems.length } Items in cart)</Link>
+          <Link to='/cart'>Cart ({ cart.lineItems.length } Items in cart)</Link>
           </span>
       ): (
         <Link to='/login'>Login</Link>
@@ -29,8 +29,8 @@ const App = ({ children, products, categories, user, logout })=> (
   </div> 
 );
 
-const mapStateToProps = ({ products, categories, auth })=>(
-  { products, categories, user: auth.user }
+const mapStateToProps = ({ products, categories, auth, cart })=>(
+  { products, categories, user: auth.user, cart }
 );
 
 const mapDispatchToProps = (dispatch)=> (

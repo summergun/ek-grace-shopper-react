@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from './authReducer';
 import { Link } from 'react-router';
+import { loadCart } from './cartReducer';
 
 class LoginPage extends Component{
   constructor(){
@@ -45,17 +46,20 @@ class LoginPage extends Component{
         }
       {
         !this.props.user ? (
-          <form onSubmit={ this.onLogin }>
-            <div className='form-group'>
-              <label>Name</label>
-              <input className='form-control' value={ this.state.name } onChange={ this.onNameChange } />
-            </div>
-            <div className='form-group'>
-              <label>Password</label>
-              <input className='form-control' value={ this.state.password } onChange={ this.onPasswordChange } />
-            </div>
-            <button className='btn btn-primary'>Login</button>
-          </form>
+          <div>
+            <form onSubmit={ this.onLogin }>
+              <div className='form-group'>
+                <label>Name</label>
+                <input className='form-control' value={ this.state.name } onChange={ this.onNameChange } />
+              </div>
+              <div className='form-group'>
+                <label>Password</label>
+                <input className='form-control' value={ this.state.password } onChange={ this.onPasswordChange } />
+              </div>
+              <button className='btn btn-primary'>Login</button>
+            </form>
+            <a className='btn btn-primary' href='/google/login'>... or login with google account</a>
+          </div>
         
         ):(null)
       }
@@ -66,7 +70,7 @@ class LoginPage extends Component{
 
 const mapDispatchToProps = (dispatch)=> (
   {
-    login: (credentials)=> dispatch(login(credentials)) 
+    login: (credentials)=> dispatch(login(credentials)).then(()=> dispatch( loadCart() )) 
   }
 );
 

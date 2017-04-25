@@ -26,6 +26,9 @@ const lineItemsReducer = (state=[], action)=> {
     case 'CREATE_LINE_ITEM_SUCCESS':
       state = [...state, action.lineItem ];
       break;
+    case 'DELETE_LINE_ITEM_SUCCESS':
+      state = state.filter( lineItem=> lineItem.id !== action.lineItem.id ) 
+      break;
   }
 
   return state;

@@ -7,6 +7,39 @@ const User = conn.define('user', {
   },
   password: conn.Sequelize.STRING
 }, {
+  classMethods: {
+    getCartForUser: function(userId){
+      const Order = conn.models['order'];
+      const LineItem = conn.models['lineItem'];
+      const Product = conn.models['product'];
+      console.log(LineItem);
+      return Order.findOne({
+        where: {
+          userId: userId,
+          state: 'CART',
+        },
+        include: [ 
+          {
+            model: LineItem,
+            include: [ Product ]
+          }
+        ]
+      })
+      .then( cart => {
+        if(cart)
+          return cart;
+        return Order.create({ userId, state: 'CART' }); 
+      })
+      .then( cart => Order.findById(cart.id, { 
+        include: [ 
+          {
+            model: LineItem,
+            include: [ Product ]
+          }
+        ]
+      }));
+    }
+  },
   instanceMethods: {
     getCart: function(){
       const userId = this.id;

@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Home from './Home';
 import CartPage from './CartPage';
+import { loadCart } from './cartReducer';
 
 import {connect} from 'react-redux';
 
@@ -37,7 +38,8 @@ const mapDispatchToProps = (dispatch)=> (
     init: ()=> {
       dispatch(loadProducts());
       dispatch(loadCategories());
-      dispatch(attemptLogin());
+      dispatch(attemptLogin())
+        .then(()=> dispatch(loadCart()));
       dispatch(loadLineItems());
     }
   }

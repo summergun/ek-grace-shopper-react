@@ -11,4 +11,8 @@ app.use('/dist', express.static(path.join(__dirname, 'dist')));
 
 app.get('/', (req, res, next)=> res.sendFile(path.join(__dirname, 'index.html')));
 
+app.get('/google/login', (req, res, next)=> {
+  res.send('TO DO - set up oauth with google-- <a href="/">Home</a>');
+});
+
 app.use('/api', require('./routes'));

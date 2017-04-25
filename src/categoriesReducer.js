@@ -13,8 +13,6 @@ const loadCategories = ()=> {
   };
 };
 
-
-
 export {
   loadCategories
 };

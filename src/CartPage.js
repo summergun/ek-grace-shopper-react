@@ -1,28 +1,42 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createLineItem } from './cartReducer';
+import { deleteLineItem } from './cartReducer';
 
-const CartPage = ({ cart })=> {
+const CartPage = ({ cart, user, createLineItem, deleteLineItem })=> {
   if(!cart)
     return null;
   return (
     <ul className='list-group'>
       {
         cart.lineItems.map( lineItem => {
-          return <li className='list-group-item' key={lineItem.id }>{ lineItem.product.name }</li>
+          return (
+            <li className='list-group-item' key={lineItem.id }>
+              { lineItem.product.name }
+              <button className='btn btn-primary pull-right' onClick={ ()=> createLineItem(user, lineItem.product, cart)}>Buy again</button>
+              <button className='btn btn-danger pull-right' onClick={ ()=> deleteLineItem(user, lineItem, cart)}>Remove</button>
+              <br style={{ clear: 'both' }} />
+            </li>
+          );
         })
       }
     </ul>
   );
 }
 
-const mapStateToProps = ({ auth })=> {
-  let cart;
-  if(auth.user){
-    cart = auth.user.cart;
-  }
+const mapStateToProps = ({ cart, user })=> {
   return {
-    cart
+    cart,
+    user
   };
 };
 
-export default connect(mapStateToProps)(CartPage);
+const mapDispatchToProps = (dispatch)=> {
+  return {
+    createLineItem: (user, product, cart)=> dispatch(createLineItem( user, product, cart )),
+    deleteLineItem: (user, lineItem, cart)=> dispatch(deleteLineItem(user, lineItem, cart))
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartPage);
