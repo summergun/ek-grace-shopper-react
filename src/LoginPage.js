@@ -58,7 +58,7 @@ class LoginPage extends Component{
               </div>
               <button className='btn btn-primary'>Login</button>
             </form>
-            <a className='btn btn-primary' href='/google/login'>... or login with google account</a>
+            <a className='btn btn-primary' href='/login/google'>... or login with google account</a>
           </div>
         
         ):(null)

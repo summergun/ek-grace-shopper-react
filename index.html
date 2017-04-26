@@ -1,6 +1,12 @@
 <html>
   <head>
     <link rel='stylesheet' href='/vendor/bootstrap/dist/css/bootstrap.css' />
+    <script>
+      if(document.location.hash.slice(1, 6) === 'token'){
+        localStorage.setItem('token', document.location.hash.slice(7));
+        document.location.hash = '';
+      }
+    </script>
     <script src='/dist/bundle.js' defer></script>
     <title>A React/Redux Template</title>
   </head>
