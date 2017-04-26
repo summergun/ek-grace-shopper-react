@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductList from './ProductList';
 import { connect } from 'react-redux';
-import { createLineItem } from './authReducer';
+import { createLineItem } from './reducers/authReducer';
 
 import ProductItem from './ProductItem';
 

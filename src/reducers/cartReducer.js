@@ -76,6 +76,17 @@ const createLineItem = (user, product, cart)=> {
   }
 };
 
+const createOrder = (user, cart)=> {
+  return (dispatch)=> {
+    const token = localStorage.getItem('token');
+    return axios.put(`/api/cart/${cart.id}/${token}`, {
+      state: 'ORDER'
+    })
+    .then(response => response.data)
+    .then(() => dispatch(loadCart()));
+  }
+};
+
 const deleteLineItem = (user, lineItem, cart)=> {
   if(!user){
     return (dispatch)=> {
@@ -115,7 +126,8 @@ export {
   loadCart,
   createLineItem,
   deleteLineItem,
-  consolidateCart
+  consolidateCart,
+  createOrder
 };
 
 

@@ -1,10 +1,11 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import productsReducer from './productsReducer';
-import categoriesReducer from './categoriesReducer';
-import authReducer from './authReducer';
-import lineItemsReducer from './lineItemsReducer';
-import cartReducer from './cartReducer';
+import productsReducer from './reducers/productsReducer';
+import ordersReducer from './reducers/ordersReducer';
+import categoriesReducer from './reducers/categoriesReducer';
+import authReducer from './reducers/authReducer';
+import lineItemsReducer from './reducers/lineItemsReducer';
+import cartReducer from './reducers/cartReducer';
 
 
 const combined = combineReducers({
@@ -12,7 +13,8 @@ const combined = combineReducers({
   categories: categoriesReducer,
   auth: authReducer,
   lineItems: lineItemsReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  orders: ordersReducer
 });
 
 const store = createStore(combined, applyMiddleware(thunk));

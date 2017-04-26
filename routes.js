@@ -36,6 +36,16 @@ app.post('/cart/:cartId/lineItems/:token', (req, res, next)=> {
     .catch(next);
 });
 
+app.put('/cart/:cartId/:token', (req, res, next)=> {
+  models.Order.findById(req.params.cartId)
+    .then( cart => {
+      cart = Object.assign(cart, req.body);
+      return cart.save();
+    })
+    .then( cart => res.send(cart)) 
+    .catch(next);
+});
+
 app.delete('/cart/:cartId/lineItems/:id/:token', (req, res, next)=> {
   models.LineItem.destroy({ where: {id : req.params.id}})
     .then(()=> res.sendStatus(200))
@@ -47,6 +57,18 @@ app.get('/cart/:token', (req, res, next)=> {
     const token = jwt.decode(req.params.token, JWT_SECRET);
     models.User.getCartForUser(token.id)
       .then( (cart) => res.send(cart))
+      .catch(next);
+  }
+  catch(er){
+    res.sendStatus(401);
+  }
+});
+
+app.get('/orders/:token', (req, res, next)=> {
+  try{
+    const token = jwt.decode(req.params.token, JWT_SECRET);
+    models.Order.findAll({ where: { userId: token.id }})
+      .then( (orders) => res.send(orders))
       .catch(next);
   }
   catch(er){

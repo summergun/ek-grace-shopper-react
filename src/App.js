@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { logout } from './authReducer';
+import { logout } from './reducers/authReducer';
 import TopSeller from './TopSeller';
-import { loadCart } from './cartReducer';
+import { loadCart } from './reducers/cartReducer';
 
 const App = ({ children, products, categories, user, logout, cart })=> (
   <div className='container'>
@@ -17,6 +17,8 @@ const App = ({ children, products, categories, user, logout, cart })=> (
       (user ) ? (
         <span>
           <a onClick={ logout }>Logout ({ user.name })</a>
+          { '|' }
+          <Link to='/orders'>Orders</Link>
         </span>
       ): (
         <Link to='/login'>Login</Link>

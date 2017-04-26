@@ -9,14 +9,15 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Home from './Home';
 import CartPage from './CartPage';
-import { loadCart } from './cartReducer';
+import { loadCart } from './reducers/cartReducer';
 
 import {connect} from 'react-redux';
 
-import { loadProducts} from './productsReducer';
-import { loadCategories } from './categoriesReducer';
-import { attemptLogin } from './authReducer';
-import { loadLineItems } from './lineItemsReducer';
+import { loadProducts} from './reducers/productsReducer';
+import { loadOrders } from './reducers/ordersReducer';
+import { loadCategories } from './reducers/categoriesReducer';
+import { attemptLogin } from './reducers/authReducer';
+import { loadLineItems } from './reducers/lineItemsReducer';
 
 
 const root = document.getElementById('root');
@@ -40,6 +41,7 @@ const mapDispatchToProps = (dispatch)=> (
       dispatch(loadCategories());
       dispatch(attemptLogin())
         .then(()=> dispatch(loadCart()))
+        .then(()=> dispatch(loadOrders()))
         .catch(()=> dispatch(loadCart()));
       dispatch(loadLineItems());
     }

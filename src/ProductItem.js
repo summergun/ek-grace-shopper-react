@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductList from './ProductList';
 import { connect } from 'react-redux';
-import { createLineItem } from './cartReducer';
+import { createLineItem } from './reducers/cartReducer';
 import { hashHistory } from 'react-router';
 
 const ProductItem = ({ product, user, createLineItem, cart })=> {

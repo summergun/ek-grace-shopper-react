@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { login } from './authReducer';
+import { login } from './reducers/authReducer';
 import { Link } from 'react-router';
-import { loadCart, consolidateCart } from './cartReducer';
+import { loadCart, consolidateCart } from './reducers/cartReducer';
 
 class LoginPage extends Component{
   constructor(){

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createLineItem } from './cartReducer';
+import { createLineItem } from './reducers/cartReducer';
 
 const TopSeller = ({ favoriteProduct, user, count, createLineItem, cart })=> {
   if(!favoriteProduct)
