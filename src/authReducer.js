@@ -22,10 +22,14 @@ const logoutSuccess = ()=> ({
 
 
 const exchangeTokenForUser = (token, dispatch)=> {
+  let _user
   return axios.get(`/api/session/${token}`)
     .then(response => response.data)
-    .then(user => dispatch(loginUserSuccess(user)))
-
+    .then(user => {
+      dispatch(loginUserSuccess(user))
+      return user
+    })
+    .then( user => user);
 };
 
 
@@ -35,9 +39,12 @@ const attemptLogin = (dispatch)=> {
   };
 };
 
-const logout = (dispatch)=> {
-  localStorage.removeItem('token');
-  return logoutSuccess();
+const logout = ()=> {
+  return (dispatch)=> {
+    localStorage.removeItem('token');
+    dispatch(logoutSuccess());
+    return Promise.resolve();
+  }
 }
 
 const login = (credentials)=> {

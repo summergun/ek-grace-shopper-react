@@ -22,19 +22,55 @@ const deleteLineItemSuccess = (lineItem)=> ({
 
 const loadCart = ()=> {
   const token = localStorage.getItem('token');
-  if(!localStorage.getItem('token'))
-    return {
-      type: 'NOOPS'
+  if(!localStorage.getItem('token')){
+    return (dispatch)=> {
+      let cart;
+      try{
+        cart = JSON.parse(localStorage.getItem('cart'));
+        if(!cart.lineItems)
+          throw 'error';
+
+      }
+      catch(er){
+        localStorage.setItem('cart', JSON.stringify({ lineItems: []}));
+        cart = JSON.parse(localStorage.getItem('cart'));
+      }
+      dispatch(loadCartSuccess(cart));
+      return Promise.resolve();
     };
+  }
   return (dispatch) => {
     return axios.get(`/api/cart/${token}`)
       .then(response => response.data)
-      .then(cart => dispatch(loadCartSuccess(cart)));
+      .then(cart => {
+        dispatch(loadCartSuccess(cart))
+        return cart;
+      });
   }
 
 };
 
 const createLineItem = (user, product, cart)=> {
+  if(!user){
+    return (dispatch)=> {
+      let cart;
+      const lineItem = { product, id: Math.floor(Math.random()*1000) };
+      try{
+        cart = JSON.parse(localStorage.getItem('cart'));
+        if(!cart.lineItems)
+          throw 'error';
+
+      }
+      catch(er){
+        localStorage.setItem('cart', JSON.stringify({ lineItems: []}));
+        cart = JSON.parse(localStorage.getItem('cart'));
+      }
+      cart.lineItems.push(lineItem);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      dispatch(loadCartSuccess(cart));
+      return Promise.resolve();
+    };
+  }
   return (dispatch)=> {
     const token = localStorage.getItem('token');
     return axios.post(`/api/cart/${cart.id}/lineItems/${token}`, {
@@ -46,6 +82,25 @@ const createLineItem = (user, product, cart)=> {
 };
 
 const deleteLineItem = (user, lineItem, cart)=> {
+  if(!user){
+    return (dispatch)=> {
+      let cart;
+      try{
+        cart = JSON.parse(localStorage.getItem('cart'));
+        if(!cart.lineItems)
+          throw 'error';
+
+      }
+      catch(er){
+        localStorage.setItem('cart', JSON.stringify({ lineItems: []}));
+        cart = JSON.parse(localStorage.getItem('cart'));
+      }
+      cart.lineItems = cart.lineItems.filter( _lineItem => _lineItem.id !== lineItem.id);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      dispatch(loadCartSuccess(cart));
+      return Promise.resolve();
+    };
+  }
   return (dispatch)=> {
     const token = localStorage.getItem('token');
     return axios.delete(`/api/cart/${cart.id}/lineItems/${lineItem.id}/${token}`)
@@ -54,11 +109,31 @@ const deleteLineItem = (user, lineItem, cart)=> {
   }
 };
 
+const consolidateCart = (user, cart) => {
+  let savedCart;
+  return (dispatch)=> {
+    try{
+      savedCart = JSON.parse(localStorage.getItem('cart'));
+      savedCart.lineItems.forEach((lineItem)=> {
+        dispatch(createLineItem(user, lineItem.product, cart));
+      });
+      localStorage.removeItem('cart');
+
+    }
+    catch(er){
+      localStorage.removeItem('cart');
+    }
+  }
+};
+
 export {
   loadCart,
   createLineItem,
-  deleteLineItem
+  deleteLineItem,
+  consolidateCart
 };
+
+
 
 
 const cartReducer = (state={ lineItems: [] }, action)=> {
@@ -70,7 +145,6 @@ const cartReducer = (state={ lineItems: [] }, action)=> {
       state = Object.assign({}, state, { lineItems: [...state.lineItems, action.lineItem]});
       break;
     case DELETE_LINE_ITEM_SUCCESS:
-      console.log(action);
       state = Object.assign({}, state, { lineItems: state.lineItems.filter( lineItem => lineItem.id != action.lineItem.id) });
       console.log(action.lineItem.id);
       break;

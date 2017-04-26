@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from './authReducer';
 import { Link } from 'react-router';
-import { loadCart } from './cartReducer';
+import { loadCart, consolidateCart } from './cartReducer';
 
 class LoginPage extends Component{
   constructor(){
@@ -70,7 +70,17 @@ class LoginPage extends Component{
 
 const mapDispatchToProps = (dispatch)=> (
   {
-    login: (credentials)=> dispatch(login(credentials)).then(()=> dispatch( loadCart() )) 
+    login: (credentials)=> {
+      let user, cart;
+      return dispatch(login(credentials))
+                              .then( _user => {
+                                user = _user;
+                                return dispatch( loadCart() )
+                              }) 
+                              .then( cart => {
+                                dispatch( consolidateCart(user, cart))
+                              })
+    }
   }
 );
 

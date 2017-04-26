@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from './authReducer';
 import TopSeller from './TopSeller';
+import { loadCart } from './cartReducer';
 
 const App = ({ children, products, categories, user, logout, cart })=> (
   <div className='container'>
@@ -13,14 +14,22 @@ const App = ({ children, products, categories, user, logout, cart })=> (
     <Link to='/categories'>Categories ({ categories.length})</Link>
     { ' | ' }
     {
-      (user && cart ) ? (
+      (user ) ? (
         <span>
           <a onClick={ logout }>Logout ({ user.name })</a>
-          {' | '} 
-          <Link to='/cart'>Cart ({ cart.lineItems.length } Items in cart)</Link>
-          </span>
+        </span>
       ): (
         <Link to='/login'>Login</Link>
+      )
+    }
+    {
+      cart  ? (
+        <span>
+        { ' | ' }
+          <Link to='/cart'>Cart ({ cart.lineItems.length } Items in cart)</Link>
+        </span>
+      ): (
+        null
       )
     }
     </div>
@@ -35,7 +44,10 @@ const mapStateToProps = ({ products, categories, auth, cart })=>(
 
 const mapDispatchToProps = (dispatch)=> (
   {
-    logout: ()=> dispatch(logout()) 
+    logout: ()=> {
+      dispatch(logout()) 
+        .then(()=> dispatch(loadCart()));
+    }
   }
 );
 

@@ -39,7 +39,8 @@ const mapDispatchToProps = (dispatch)=> (
       dispatch(loadProducts());
       dispatch(loadCategories());
       dispatch(attemptLogin())
-        .then(()=> dispatch(loadCart()));
+        .then(()=> dispatch(loadCart()))
+        .catch(()=> dispatch(loadCart()));
       dispatch(loadLineItems());
     }
   }

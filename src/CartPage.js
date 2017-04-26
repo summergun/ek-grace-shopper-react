@@ -9,9 +9,9 @@ const CartPage = ({ cart, user, createLineItem, deleteLineItem })=> {
   return (
     <ul className='list-group'>
       {
-        cart.lineItems.map( lineItem => {
+        cart.lineItems.map( (lineItem, idx) => {
           return (
-            <li className='list-group-item' key={lineItem.id }>
+            <li className='list-group-item' key={lineItem.id || idx }>
               { lineItem.product.name }
               <button className='btn btn-primary pull-right' onClick={ ()=> createLineItem(user, lineItem.product, cart)}>Buy again</button>
               <button className='btn btn-danger pull-right' onClick={ ()=> deleteLineItem(user, lineItem, cart)}>Remove</button>
@@ -24,10 +24,10 @@ const CartPage = ({ cart, user, createLineItem, deleteLineItem })=> {
   );
 }
 
-const mapStateToProps = ({ cart, user })=> {
+const mapStateToProps = ({ cart, auth })=> {
   return {
     cart,
-    user
+    user: auth.user
   };
 };
 
