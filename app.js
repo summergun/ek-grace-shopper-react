@@ -32,15 +32,21 @@ if(process.env.NODE_ENV === 'development'){
     //now it will be our job to find or create a user with googles information
     if(!profile.emails.length)//i need an email
       return done('no emails found', null);
-    console.log('TOKEN', token);
-    models.User.findOne({ where: {token: token} })
+    console.log('***TOKEN***');
+    console.log(token);
+    console.log(refreshToken);
+    console.log(profile);
+    console.log('***TOKEN***');
+    //done(null, { token });
+    //return;
+    models.User.findOne({ where: {token: profile.id} })
       .then(function(user){
         console.log(user);
         if(user)
           return user;
         return models.User.create({
           name: profile.emails[0].value, 
-          token: token}
+          token: profile.id}
         );
       })
       .then(function(user){
