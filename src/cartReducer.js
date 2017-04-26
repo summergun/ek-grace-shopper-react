@@ -20,21 +20,26 @@ const deleteLineItemSuccess = (lineItem)=> ({
   lineItem
 });
 
+const getLocalCart = () => {
+  let cart;
+  try{
+    cart = JSON.parse(localStorage.getItem('cart'));
+    if(!cart.lineItems)
+      throw 'error';
+
+  }
+  catch(er){
+    localStorage.setItem('cart', JSON.stringify({ lineItems: []}));
+    cart = JSON.parse(localStorage.getItem('cart'));
+  }
+  return cart;
+}
+
 const loadCart = ()=> {
   const token = localStorage.getItem('token');
   if(!localStorage.getItem('token')){
     return (dispatch)=> {
-      let cart;
-      try{
-        cart = JSON.parse(localStorage.getItem('cart'));
-        if(!cart.lineItems)
-          throw 'error';
-
-      }
-      catch(er){
-        localStorage.setItem('cart', JSON.stringify({ lineItems: []}));
-        cart = JSON.parse(localStorage.getItem('cart'));
-      }
+      const cart = getLocalCart();
       dispatch(loadCartSuccess(cart));
       return Promise.resolve();
     };
@@ -53,18 +58,8 @@ const loadCart = ()=> {
 const createLineItem = (user, product, cart)=> {
   if(!user){
     return (dispatch)=> {
-      let cart;
       const lineItem = { product, id: Math.floor(Math.random()*1000) };
-      try{
-        cart = JSON.parse(localStorage.getItem('cart'));
-        if(!cart.lineItems)
-          throw 'error';
-
-      }
-      catch(er){
-        localStorage.setItem('cart', JSON.stringify({ lineItems: []}));
-        cart = JSON.parse(localStorage.getItem('cart'));
-      }
+      const cart = getLocalCart();
       cart.lineItems.push(lineItem);
       localStorage.setItem('cart', JSON.stringify(cart));
       dispatch(loadCartSuccess(cart));
@@ -84,17 +79,7 @@ const createLineItem = (user, product, cart)=> {
 const deleteLineItem = (user, lineItem, cart)=> {
   if(!user){
     return (dispatch)=> {
-      let cart;
-      try{
-        cart = JSON.parse(localStorage.getItem('cart'));
-        if(!cart.lineItems)
-          throw 'error';
-
-      }
-      catch(er){
-        localStorage.setItem('cart', JSON.stringify({ lineItems: []}));
-        cart = JSON.parse(localStorage.getItem('cart'));
-      }
+      const cart = getLocalCart();
       cart.lineItems = cart.lineItems.filter( _lineItem => _lineItem.id !== lineItem.id);
       localStorage.setItem('cart', JSON.stringify(cart));
       dispatch(loadCartSuccess(cart));
@@ -132,8 +117,6 @@ export {
   deleteLineItem,
   consolidateCart
 };
-
-
 
 
 const cartReducer = (state={ lineItems: [] }, action)=> {
