@@ -10,6 +10,7 @@ import store from './store';
 import Home from './Home';
 import CartPage from './CartPage';
 import { loadCart } from './reducers/cartReducer';
+import OrdersPage from './OrdersPage';
 
 import {connect} from 'react-redux';
 
@@ -19,7 +20,6 @@ import { loadCategories } from './reducers/categoriesReducer';
 import { attemptLogin } from './reducers/authReducer';
 import { loadLineItems } from './reducers/lineItemsReducer';
 
-
 const root = document.getElementById('root');
 
 const Routes = ({ init })=> (
@@ -28,6 +28,7 @@ const Routes = ({ init })=> (
       <IndexRoute component={ Home } />
       <Route path='login' component={ LoginPage } />
       <Route path='categories' component={CategoriesPage} />
+      <Route path='orders' component={OrdersPage} />
       <Route path='cart' component={CartPage} />
       <Route path='categories/:name' component={ProductsPage} />
     </Route>

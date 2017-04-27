@@ -5,7 +5,7 @@ import { logout } from './reducers/authReducer';
 import TopSeller from './TopSeller';
 import { loadCart } from './reducers/cartReducer';
 
-const App = ({ children, products, categories, user, logout, cart })=> (
+const App = ({ children, products, categories, user, logout, cart, numberOfOrders })=> (
   <div className='container'>
     <h1>PROF's Grace Shopper</h1>
     <div className='container'>
@@ -17,8 +17,8 @@ const App = ({ children, products, categories, user, logout, cart })=> (
       (user ) ? (
         <span>
           <a onClick={ logout }>Logout ({ user.name })</a>
-          { '|' }
-          <Link to='/orders'>Orders</Link>
+          { ' | ' }
+          <Link to='/orders'>Orders ({ numberOfOrders })</Link>
         </span>
       ): (
         <Link to='/login'>Login</Link>
@@ -40,8 +40,8 @@ const App = ({ children, products, categories, user, logout, cart })=> (
   </div> 
 );
 
-const mapStateToProps = ({ products, categories, auth, cart })=>(
-  { products, categories, user: auth.user, cart }
+const mapStateToProps = ({ products, categories, auth, cart, orders })=>(
+  { products, categories, user: auth.user, cart, numberOfOrders: orders ? orders.length : 0 }
 );
 
 const mapDispatchToProps = (dispatch)=> (

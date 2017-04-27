@@ -16,7 +16,6 @@ const loadOrders = ()=> {
       .then(response => response.data)
       .then(orders => {
         dispatch(loadOrdersSuccess(orders))
-        return cart;
       });
   }
 };

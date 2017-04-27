@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createLineItem, deleteLineItem, createOrder } from './reducers/cartReducer';
+import { loadOrders } from './reducers/ordersReducer';
 
 const CartPage = ({ cart, user, createLineItem, deleteLineItem, createOrder })=> {
   if(!cart)
@@ -45,7 +46,10 @@ const mapDispatchToProps = (dispatch)=> {
   return {
     createLineItem: (user, product, cart)=> dispatch(createLineItem( user, product, cart )),
     deleteLineItem: (user, lineItem, cart)=> dispatch(deleteLineItem(user, lineItem, cart)),
-    createOrder: (user, cart)=> dispatch(createOrder(user, cart))
+    createOrder: (user, cart)=> {
+      dispatch(createOrder(user, cart))
+        .then(()=> dispatch(loadOrders()));
+    }
   };
 };
 
