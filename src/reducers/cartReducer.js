@@ -82,8 +82,7 @@ const createOrder = (user, cart)=> {
     return axios.put(`/api/cart/${cart.id}/${token}`, {
       state: 'ORDER'
     })
-    .then(response => response.data)
-    .then(() => dispatch(loadCart()));
+    .then(response => response.data);
   }
 };
 

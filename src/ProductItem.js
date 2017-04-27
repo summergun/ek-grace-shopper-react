@@ -8,7 +8,7 @@ const ProductItem = ({ product, user, createLineItem, cart })=> {
   return (
     <li className='list-group-item'>
       { product.name }
-      <button className='btn btn-primary pull-right' onClick={()=> createLineItem(user, product, cart) }>Buy Button Goes Here</button>
+      <button className='btn btn-primary pull-right' onClick={()=> createLineItem(user, product, cart) }>Buy Me</button>
       <br style={{ clear: 'both' }} />
     </li>
   );

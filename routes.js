@@ -67,7 +67,10 @@ app.get('/cart/:token', (req, res, next)=> {
 app.get('/orders/:token', (req, res, next)=> {
   try{
     const token = jwt.decode(req.params.token, JWT_SECRET);
-    models.Order.findAll({ where: { userId: token.id }})
+    models.Order.findAll({ 
+      where: { userId: token.id, state: 'ORDER' },
+      include: [ models.LineItem ]
+    })
       .then( (orders) => res.send(orders))
       .catch(next);
   }

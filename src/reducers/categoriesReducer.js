@@ -8,8 +8,12 @@ const loadCategoriesSuccess = (categories)=> ({
 
 const loadCategories = ()=> {
   return (dispatch)=> {
+    let categories;
     return axios.get('/api/categories')
-      .then(response => dispatch(loadCategoriesSuccess(response.data)));
+      .then( response => response.data) 
+      .then( _categories => categories = _categories)
+      .then(() => dispatch(loadCategoriesSuccess(categories)))
+      .then(() => categories);
   };
 };
 

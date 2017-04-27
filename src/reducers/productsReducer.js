@@ -30,17 +30,19 @@ const destroyProduct = (product)=> {
 
 export {
   destroyProduct,
-  loadProducts
+  loadProducts,
+  loadProductsSuccess
 };
 
 
-const productsReducer = (state=[], action)=> {
+const productsReducer = (state={}, action)=> {
   switch(action.type){
     case LOAD_PRODUCTS_SUCCESS:
-      state = action.products;
-      break;
-    case DESTROY_PRODUCT_SUCCESS:
-      state = state.filter(product=> product.id != action.product.id);
+      const productsMap = action.products.reduce((memo, product)=> {
+        memo[product.id] = product;
+        return memo;
+      }, {});
+      state =  Object.assign({}, state, productsMap);
       break;
   }
   return state;

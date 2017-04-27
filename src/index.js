@@ -11,10 +11,11 @@ import Home from './Home';
 import CartPage from './CartPage';
 import { loadCart } from './reducers/cartReducer';
 import OrdersPage from './OrdersPage';
+import OrderPage from './OrderPage';
 
 import {connect} from 'react-redux';
 
-import { loadProducts} from './reducers/productsReducer';
+import { loadProductsSuccess } from './reducers/productsReducer';
 import { loadOrders } from './reducers/ordersReducer';
 import { loadCategories } from './reducers/categoriesReducer';
 import { attemptLogin } from './reducers/authReducer';
@@ -28,7 +29,9 @@ const Routes = ({ init })=> (
       <IndexRoute component={ Home } />
       <Route path='login' component={ LoginPage } />
       <Route path='categories' component={CategoriesPage} />
-      <Route path='orders' component={OrdersPage} />
+      <Route path='orders' component={OrdersPage}>
+        <Route path=':id' component={OrderPage} />
+      </Route>
       <Route path='cart' component={CartPage} />
       <Route path='categories/:name' component={ProductsPage} />
     </Route>
@@ -38,8 +41,14 @@ const Routes = ({ init })=> (
 const mapDispatchToProps = (dispatch)=> (
   {
     init: ()=> {
-      dispatch(loadProducts());
-      dispatch(loadCategories());
+      dispatch(loadCategories())
+        .then((categories)=> {
+          const products = categories.reduce((memo, category)=> {
+            memo = memo.concat(category.products);
+            return memo;
+          }, []);
+          dispatch(loadProductsSuccess(products));
+        });
       dispatch(attemptLogin())
         .then(()=> dispatch(loadCart()))
         .then(()=> dispatch(loadOrders()))

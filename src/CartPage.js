@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createLineItem, deleteLineItem, createOrder } from './reducers/cartReducer';
+import { hashHistory } from 'react-router';
+import { loadCart, createLineItem, deleteLineItem, createOrder } from './reducers/cartReducer';
 import { loadOrders } from './reducers/ordersReducer';
 
 const CartPage = ({ cart, user, createLineItem, deleteLineItem, createOrder })=> {
@@ -47,8 +48,12 @@ const mapDispatchToProps = (dispatch)=> {
     createLineItem: (user, product, cart)=> dispatch(createLineItem( user, product, cart )),
     deleteLineItem: (user, lineItem, cart)=> dispatch(deleteLineItem(user, lineItem, cart)),
     createOrder: (user, cart)=> {
+      let order;
       dispatch(createOrder(user, cart))
-        .then(()=> dispatch(loadOrders()));
+        .then((_order)=> order = _order)
+        .then(()=> dispatch(loadCart()))
+        .then(()=> dispatch(loadOrders()))
+        .then(()=> hashHistory.push(`/orders/${order.id}`));
     }
   };
 };
