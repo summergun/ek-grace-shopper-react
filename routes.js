@@ -12,6 +12,12 @@ app.get('/products', (req, res, next)=> {
     .catch(next);
 });
 
+app.get('/users', (req, res, next)=> {
+  models.User.findAll({ order: 'name'})
+    .then( users => res.send(users))
+    .catch(next);
+});
+
 app.delete('/products/:id', (req, res, next)=> {
   models.Product.destroy({ where: { id: req.params.id}})
     .then( () => res.sendStatus(204))

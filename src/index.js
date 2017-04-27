@@ -12,6 +12,8 @@ import CartPage from './CartPage';
 import { loadCart } from './reducers/cartReducer';
 import OrdersPage from './OrdersPage';
 import OrderPage from './OrderPage';
+import UsersPage from './UsersPage';
+import UserPage from './UserPage';
 
 import {connect} from 'react-redux';
 
@@ -20,6 +22,7 @@ import { loadOrders } from './reducers/ordersReducer';
 import { loadCategories } from './reducers/categoriesReducer';
 import { attemptLogin } from './reducers/authReducer';
 import { loadLineItems } from './reducers/lineItemsReducer';
+import { loadUsers } from './reducers/usersReducer';
 
 const root = document.getElementById('root');
 
@@ -28,6 +31,9 @@ const Routes = ({ init })=> (
     <Route path='/' component={ App } onEnter={ init }>
       <IndexRoute component={ Home } />
       <Route path='login' component={ LoginPage } />
+      <Route path='users' component={UsersPage}>
+        <Route path=':id' component={ UserPage } />
+      </Route>
       <Route path='categories' component={CategoriesPage} />
       <Route path='orders' component={OrdersPage}>
         <Route path=':id' component={OrderPage} />
@@ -41,6 +47,7 @@ const Routes = ({ init })=> (
 const mapDispatchToProps = (dispatch)=> (
   {
     init: ()=> {
+      dispatch(loadUsers());
       dispatch(loadCategories())
         .then((categories)=> {
           const products = categories.reduce((memo, category)=> {

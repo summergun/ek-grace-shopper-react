@@ -6,7 +6,11 @@ const User = conn.define('user', {
     unique: true
   },
   password: conn.Sequelize.STRING,
-  token: conn.Sequelize.TEXT
+  token: conn.Sequelize.TEXT,
+  isAdmin: {
+    type: conn.Sequelize.BOOLEAN,
+    defaultValue: false
+  }
 }, {
   classMethods: {
     getCartForUser: function(userId){

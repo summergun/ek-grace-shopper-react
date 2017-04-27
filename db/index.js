@@ -30,7 +30,7 @@ const seed = ()=> {
 
   return sync()
     .then(()=> {
-      const promises = products.map(name => Product.create({ name }));
+      const promises = products.map((name, idx) => Product.create({ name, price: idx }));
 
       return Promise.all(promises)
         .then(result => [ foo, bar, bazz] = result) 
