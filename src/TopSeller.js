@@ -7,18 +7,12 @@ const TopSeller = ({ favoriteProduct, user, count, createLineItem, cart })=> {
     return null;
   return (
     <div className='well'>
-    {
-      user ? (
        <button className='btn btn-primary' onClick={ ()=> createLineItem(user, favoriteProduct, cart)}>Top Seller: { favoriteProduct.name } - { count } Bought - Click to Buy!!</button> 
-      ):(
-        <span>{ favoriteProduct.name } { count }</span>
-      )
-    }
     </div>
   );
 }
 
-const mapStateToProps = ({ lineItems, categories, auth, cart })=> {
+const mapStateToProps = ({ lineItems, categories, auth, cart, products })=> {
   const map = lineItems.reduce((memo, lineItem) => {
     memo[lineItem.productId] = typeof memo[lineItem.productId] === 'undefined' ? 0 : memo[lineItem.productId]; 
     memo[lineItem.productId]++;
@@ -31,16 +25,7 @@ const mapStateToProps = ({ lineItems, categories, auth, cart })=> {
     }
     return memo;
   }, { max: 0 });
-  const favoriteProduct = categories.reduce((memo, category)=> {
-    var found = category.products.reduce((found, product)=> {
-      if(product.id === max.id)
-        found = product;
-      return found;
-    }, undefined);
-    if(found)
-      memo = found;
-    return memo;
-  }, undefined); 
+  const favoriteProduct = products[max.id]; 
 
   return {
     favoriteProduct: favoriteProduct,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from './reducers/authReducer';
 import TopSeller from './TopSeller';
@@ -48,7 +48,8 @@ const mapDispatchToProps = (dispatch)=> (
   {
     logout: ()=> {
       dispatch(logout()) 
-        .then(()=> dispatch(loadCart()));
+        .then(()=> dispatch(loadCart()))
+        .then(()=> hashHistory.push('/'))
     }
   }
 );
